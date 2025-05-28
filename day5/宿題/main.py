@@ -194,9 +194,11 @@ class ModelTester:
         return path
 
     @staticmethod
-    def load_model(path="models/titanic_model.pkl"):
+    def load_model(path="titanic_model.pkl"):
         """モデルを読み込む"""
-        with open(path, "rb") as f:
+        base_dir = os.path.dirname(__file__)
+        local_path = os.path.join(base_dir, "models", "titanic_model.pkl")
+        with open(local_path, "rb") as f:
             model = pickle.load(f)
         return model
 
@@ -252,6 +254,8 @@ def test_model_performance():
         assert (
             metrics["inference_time"] < 1.0
         ), f"推論時間が長すぎます: {metrics['inference_time']}秒"
+
+        print(f"精度および推論時間は合格です")
     except FileNotFoundError:
         print("過去のモデルを発見できませんでした")
         pass
@@ -285,9 +289,9 @@ if __name__ == "__main__":
     model = ModelTester.train_model(X_train, y_train, model_params)
     metrics = ModelTester.evaluate_model(model, X_test, y_test)
 
-    test_model_performance()
     print(f"精度: {metrics['accuracy']:.4f}")
     print(f"推論時間: {metrics['inference_time']:.4f}秒")
+    test_model_performance()
 
     try:
         # 過去バージョンのモデルの読み込み
