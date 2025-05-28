@@ -253,7 +253,8 @@ def test_model_performance():
             metrics["inference_time"] < 1.0
         ), f"推論時間が長すぎます: {metrics['inference_time']}秒"
     except FileNotFoundError:
-        return True
+        print("過去のモデルを発見できませんでした")
+        pass
 
 
 if __name__ == "__main__":
